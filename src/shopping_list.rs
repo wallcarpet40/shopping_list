@@ -49,7 +49,9 @@ impl ShoppingList {
 
         else {
             println!("Enter number of item to be removed from list:\n");
-            self.show_list();
+            for (index, item) in self.items.clone().into_iter().enumerate() { 
+                println!("{}. {}", index, item);
+            };
 
             let mut selection = String::new();
             std::io::stdin().read_line(&mut selection)?;
