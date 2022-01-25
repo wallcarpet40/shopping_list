@@ -5,7 +5,8 @@ use shopping_list::ShoppingList;
 pub enum MyErrors {
     ParseIntErr(std::num::ParseIntError),
     StringTooShort,
-    ItemRemovalErr,
+    ListEmpty,
+    IterOutOfBounds,
     IoReadErr(std::io::Error),
 }
 
@@ -44,7 +45,7 @@ fn main() -> Result<(), Box<MyErrors>> {
             .read_line(&mut selection)
             .map_err(MyErrors::IoReadErr)?;
 
-        match selection.trim().parse::<i32>() {
+        match selection.trim().parse::<usize>() {
             Ok(1) => { if let Err(MyErrors::StringTooShort) = shopping_list.add_item() {
                 println!("Cannot add empty string or string too short");
                          continue;
@@ -55,10 +56,12 @@ fn main() -> Result<(), Box<MyErrors>> {
             },
             
             Ok(3) => {
-                if let Err(MyErrors::ItemRemovalErr) = shopping_list.remove_item() {
-                    println!("Nothing to remove!"); 
-                    continue;
-                };
+                match shopping_list.remove_item() {
+                    Ok(_) => (),
+                    Err(MyErrors::ListEmpty) => { println!("List is empty!"); continue; },
+                    Err(MyErrors::IterOutOfBounds) => { println!("Index bigger than items list"); continue; },
+                    Err(_) => {println!("Undefined error"); continue;},
+                }
             },
 
             Ok(4) => {

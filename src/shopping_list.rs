@@ -44,7 +44,7 @@ impl ShoppingList {
     pub fn remove_item(&mut self) -> Result<&mut Self, MyErrors> {
 
         if self.items.len() == 0 {
-            Err(MyErrors::ItemRemovalErr)
+            Err(MyErrors::ListEmpty)
         }
 
         else {
@@ -54,9 +54,14 @@ impl ShoppingList {
             let mut selection = String::new();
             std::io::stdin().read_line(&mut selection)?;
 
-            let selection = selection.trim().parse::<i32>()?;
-            self.items.remove(selection as usize);
-            Ok(self)
+            let selection = selection.trim().parse::<usize>()?;
+            if selection < self.items.len() {
+                self.items.remove(selection);
+                Ok(self)
+            } 
+            else {
+                return Err(MyErrors::IterOutOfBounds);
+            }
         }
         
     }
