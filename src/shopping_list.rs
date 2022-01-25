@@ -28,11 +28,10 @@ impl ShoppingList {
         println!("Enter the item to be added to the list");
 
         let mut item = String::new();
-        std::io::stdin().read_line(&mut item).map_err(MyErrors::IoReadErr)?;
+        std::io::stdin().read_line(&mut item)?;
 
         if item == "\n" || item.len() <= 3 { 
-            println!("Cannot add an empty line");
-            Err(MyErrors::StringTooShort)  // Why can't I return an Err(self) or Err(Box<dyn std::error::Error>)
+            Err(MyErrors::StringTooShort)  
         }
 
         else {
@@ -45,7 +44,6 @@ impl ShoppingList {
     pub fn remove_item(&mut self) -> Result<&mut Self, MyErrors> {
 
         if self.items.len() == 0 {
-            println!("List is empty!");
             Err(MyErrors::ItemRemovalErr)
         }
 
@@ -54,9 +52,9 @@ impl ShoppingList {
             self.show_list();
 
             let mut selection = String::new();
-            std::io::stdin().read_line(&mut selection).map_err(MyErrors::IoReadErr)?;
+            std::io::stdin().read_line(&mut selection)?;
 
-            let selection = selection.trim().parse::<i32>().map_err(MyErrors::ParseInt)?;
+            let selection = selection.trim().parse::<i32>()?;
             self.items.remove(selection as usize);
             Ok(self)
         }
