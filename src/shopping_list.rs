@@ -46,7 +46,7 @@ impl ShoppingList {
 
         if self.items.len() == 0 {
             println!("List is empty!");
-            Ok(self)
+            Err(MyErrors::ItemRemovalErr)
         }
 
         else {
