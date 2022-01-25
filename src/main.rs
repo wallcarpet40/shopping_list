@@ -46,10 +46,12 @@ fn main() -> Result<(), Box<MyErrors>> {
             .map_err(MyErrors::IoReadErr)?;
 
         match selection.trim().parse::<usize>() {
-            Ok(1) => { if let Err(MyErrors::StringTooShort) = shopping_list.add_item() {
-                println!("Cannot add empty string or string too short");
-                         continue;
-            }},
+            Ok(1) => {
+                if let Err(MyErrors::StringTooShort) = shopping_list.add_item() {
+                    println!("Cannot add empty string or string too short");
+                    continue;
+                }
+            },
 
             Ok(2) => {
                 shopping_list.show_list();

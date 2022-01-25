@@ -19,7 +19,7 @@ impl ShoppingList {
             println!("Items on list:\n");
 
             for item in &self.items {
-                println!("{:?}", item.trim());
+                println!("{}", item.trim());
             }
         }
     }
@@ -65,4 +65,11 @@ impl ShoppingList {
         }
         
     }
+}
+
+impl std::fmt::Display for ShoppingList {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "({:?})", self.items)
+    }
+
 }
